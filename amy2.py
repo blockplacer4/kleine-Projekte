@@ -42,6 +42,14 @@ def check_uuids(uuid_list):
         else:
             print(f"Failed UUID: {uuid}")
 
+def remove_server_from_file(server_ip):
+    with open('server_ips.txt', 'r') as file:
+        lines = file.readlines()
+    with open('server_ips.txt', 'w') as file:
+        for line in lines:
+            if line.strip() != server_ip:
+                file.write(line)
+
 with open(server_ips_file, 'r') as server_ips_file:
     server_ips_list = server_ips_file.readlines()
 
@@ -55,6 +63,8 @@ for server_ip in server_ips_list:
         uuid_list = get_uuids_from_response(likes_data)
         uuid_list = list(set(uuid_list))
         check_uuids(uuid_list)
+        remove_server_from_file(server_ip)
     else:
         print(f"Error for server IP: {server_ip}")
+        time.sleep(5)
 
